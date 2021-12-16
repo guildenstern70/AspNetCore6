@@ -1,23 +1,43 @@
-var builder = WebApplication.CreateBuilder(args);
+/**
+ * 
+ * Project SmartAspNetCore
+ * Copyright (C) 2021 Alessio Saltarin 'alessiosaltarin@gmail.com'
+ * This software is licensed under MIT License. See LICENSE.
+ * 
+ **/
 
-// Add services to the container.
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+// Home Page
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
+
+// Controllers
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Swagger https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Logging
+builder.Services.AddLogging(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    options.AddSimpleConsole(c =>
+    {
+        c.TimestampFormat = "[dd-MM-yyyy HH:mm:ss.fff] ";
+    });
+});
 
-app.UseAuthorization();
+WebApplication app = builder.Build();
 
-app.MapControllers();
-
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers(); //Routes for my API controllers
+    endpoints.MapBlazorHub();   //Routes for pages
+    endpoints.MapFallbackToPage("/_Host");
+});
 app.Run();
