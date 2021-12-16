@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "SmartAspNetCore": {
+    "AspNetCore6": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

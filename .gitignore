@@ -1,5 +1,8 @@
 .vs/
 .idea/
-SmartAspNetCore/bin
-SmartAspNetCore/obj
+AspNetCore6/bin
+AspNetCore6/obj
+AspNetCore6.Test/bin
+AspNetCore6.Test/obj
+
 

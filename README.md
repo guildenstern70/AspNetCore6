@@ -1,6 +1,6 @@
-# Smart ASP.NET Core
+# ASP.NET Core 6
 
-ASP.NET Core REST API with
+ASP.NET Core 6 REST API Template with
 
 * Hero start page in Bootstrap 5
 * ORM with Entity Framework and SQLite

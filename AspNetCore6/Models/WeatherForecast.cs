@@ -1,4 +1,4 @@
-namespace SmartAspNetCore
+namespace AspNetCore6
 {
     public class WeatherForecast
     {

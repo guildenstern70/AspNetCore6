@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace SmartAspNetCore.Pages;
+namespace AspNetCore6.Pages;
 
 public class Index_razor : PageModel
 {
