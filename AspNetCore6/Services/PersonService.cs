@@ -1,10 +1,10 @@
-/**
+/*
  * 
  * Project AspNetCore6
  * Copyright (C) 2021 Alessio Saltarin 'alessiosaltarin@gmail.com'
  * This software is licensed under MIT License. See LICENSE.
  * 
- **/
+ */
 
 using AspNetCore6.Data;
 using AspNetCore6.Data.Models;

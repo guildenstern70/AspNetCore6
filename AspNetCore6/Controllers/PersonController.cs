@@ -1,10 +1,10 @@
-/**
+/*
  * 
  * Project AspNetCore6
  * Copyright (C) 2021 Alessio Saltarin 'alessiosaltarin@gmail.com'
  * This software is licensed under MIT License. See LICENSE.
  * 
- **/
+ */
 
 using AspNetCore6.Data.Models;
 using AspNetCore6.Services;
@@ -26,6 +26,10 @@ public class PersonController : ControllerBase
         this._personService = personService;
     }
     
+    /// <summary>
+    /// Get a list of persons
+    /// </summary>
+    /// <returns>A List of persons</returns>
     [HttpGet]
     public async Task<ActionResult<List<Person>>> Get()
     {
