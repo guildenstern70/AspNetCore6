@@ -45,7 +45,7 @@ builder.Services.AddSwaggerGen(options =>
             Url = new Uri("https://example.com/license")
         }
     });
-    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    string xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
@@ -64,7 +64,7 @@ builder.Services.AddLogging(options =>
     });
 });
 
-// Routing is lowercase
+// Routing must be lowercase
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 WebApplication app = builder.Build();
@@ -75,7 +75,9 @@ var options = scope.ServiceProvider.GetRequiredService<DbContextOptions<ProjectD
 await DbUtils.EnsureDbCreatedAndSeedAsync(options, 10);
 
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c => {
+    c.InjectStylesheet("/css/swaggerui/theme-flattop.css");
+});
 app.UseStaticFiles();
 app.UseRouting();
 app.UseEndpoints(endpoints =>

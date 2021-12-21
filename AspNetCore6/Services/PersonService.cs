@@ -30,30 +30,49 @@ public class PersonService: IPersonService
         return await context.Persons.ToListAsync();
     }
 
-    public Person AddPerson(Person p)
+    public async Task<Person?> GetById(int id)
     {
-        this._dbContext.Add(p);
-        this._dbContext.SaveChanges();
+        await using var context = this._dbContext;
+        return await context.Persons.FindAsync(id);
+    }
+
+    public async Task<Person> AddPerson(Person p)
+    {
+        await using var context = this._dbContext;
+        context.Persons.Add(p);
+        await context.SaveChangesAsync();
         return p;
     }
 
-    public void DeletePerson(int id)
+    public async Task<Person?> ModifyPerson(Person p)
     {
-        Person? person = this._dbContext.Persons?.Find(id);
+        await using var context = this._dbContext;
+        var person = await context.Persons.FindAsync(p.Id);
+        if (person == null)
+        {
+            return null;
+        }
+        person.Name = p.Name;
+        person.Surname = p.Surname;
+        person.Age = p.Age;
+        person.FiscalCode = p.FiscalCode;
+        await context.SaveChangesAsync();
+        return person;
+    }
+
+    public async Task DeletePerson(int id)
+    {
+        await using var context = this._dbContext;
+        var person = await context.Persons.FindAsync(id);
         if (person == null) return;
-        
-        this._dbContext.Remove(person);
-        this._dbContext.SaveChanges();
+        context.Remove(person);
+        await context.SaveChangesAsync();
     }
 
     public long Size()
     {
         return this._dbContext.Persons?.Count() ?? 0L;
     }
-
-    public Person? GetPerson(int id)
-    {
-        return this._dbContext.Persons?.Find(id);
-    }
+    
     
 }

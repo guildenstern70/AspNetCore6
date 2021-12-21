@@ -17,8 +17,12 @@ public class Person
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     
-    public string Name { get; init; } = null!;
-    public string Surname { get; init; }= null!;
-    public int Age { get; init; }
-    public string FiscalCode { get; init; }= null!;
+    [Required]
+    public string Name { get; set; } = null!;
+    [Required]
+    public string Surname { get; set; }= null!;
+    [Required]
+    public int Age { get;  set; }
+    [Required]
+    public string FiscalCode { get; set; }= null!;
 }

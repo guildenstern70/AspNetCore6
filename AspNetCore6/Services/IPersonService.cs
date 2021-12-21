@@ -13,8 +13,9 @@ namespace AspNetCore6.Services;
 public interface IPersonService
 {
     Task<List<Person>> GetAll();
-    Person AddPerson(Person p);
+    Task<Person?> GetById(int id);
+    Task<Person> AddPerson(Person p);
+    Task<Person?> ModifyPerson(Person p);
     long Size();
-    Person? GetPerson(int id);
-    void DeletePerson(int id);
+    Task DeletePerson(int id);
 }
