@@ -7,7 +7,7 @@
  */
 
 using AspNetCore6.Data.Models;
-using AspNetCore6.Services;
+using AspNetCore6.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetCore6.Controllers;
@@ -17,14 +17,14 @@ namespace AspNetCore6.Controllers;
 [Produces("application/json")]
 public class PersonController : ControllerBase
 {
-    private readonly IPersonService _personService;
+    private readonly IPersonRepository _personRepository;
     private readonly ILogger<PersonController> _logger;
     
-    public PersonController(IPersonService personService,
+    public PersonController(IPersonRepository personRepository,
         ILogger<PersonController> logger)
     {
         this._logger = logger;
-        this._personService = personService;
+        this._personRepository = personRepository;
     }
     
     /// <summary>
@@ -35,7 +35,7 @@ public class PersonController : ControllerBase
     public async Task<ActionResult<List<Person>>> Get()
     {
         this._logger.LogInformation("GET api/person");
-        List<Person> result = await this._personService.GetAll();
+        List<Person> result = await this._personRepository.GetAll();
         return this.Ok(result);
     }
 
@@ -49,7 +49,7 @@ public class PersonController : ControllerBase
     public async Task<ActionResult<Person>> GetById(int id)
     {
         this._logger.LogInformation("GET api/person by ID=" + id);
-        var person = await this._personService.GetById(id);
+        var person = await this._personRepository.GetById(id);
         if (person == null)
         {
             return this.NotFound();
@@ -77,7 +77,7 @@ public class PersonController : ControllerBase
     public async Task<ActionResult<Person>> Post(Person person)
     {
         this._logger.LogInformation("POST api/person");
-        var createdPerson = await this._personService.AddPerson(person);
+        var createdPerson = await this._personRepository.AddPerson(person);
         return this.CreatedAtAction(nameof(this.Get), new { id = createdPerson.Id }, createdPerson);
     }
     
@@ -88,12 +88,12 @@ public class PersonController : ControllerBase
     {
         this._logger.LogInformation("PUT api/person with ID=" + person.Id);
         if (id != person.Id)
-            return BadRequest("Person ID mismatch");
+            return this.BadRequest("Person ID mismatch");
 
-        var updatedPerson = await this._personService.ModifyPerson(person);
+        var updatedPerson = await this._personRepository.ModifyPerson(person);
 
         if (updatedPerson == null)
-            return NotFound($"Person with Id = {id} not found");
+            return this.NotFound($"Person with Id = {id} not found");
 
         return updatedPerson;
     }
@@ -102,7 +102,7 @@ public class PersonController : ControllerBase
     public async Task Delete(int id)
     {
         this._logger.LogInformation("DELETE api/person by ID=" + id);
-        await this._personService.DeletePerson(id);
+        await this._personRepository.DeletePerson(id);
     }
 
 }

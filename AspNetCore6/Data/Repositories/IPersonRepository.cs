@@ -8,14 +8,15 @@
 
 using AspNetCore6.Data.Models;
 
-namespace AspNetCore6.Services;
+namespace AspNetCore6.Data.Repositories;
 
-public interface IPersonService
+public interface IPersonRepository
 {
     Task<List<Person>> GetAll();
     Task<Person?> GetById(int id);
     Task<Person> AddPerson(Person p);
     Task<Person?> ModifyPerson(Person p);
     long Size();
+    ProjectDbContext GetDbContext();
     Task DeletePerson(int id);
 }

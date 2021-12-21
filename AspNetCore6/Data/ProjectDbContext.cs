@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCore6.Data;
 
-public class ProjectDbContext : DbContext
+public sealed class ProjectDbContext : DbContext
 {
     // Do not delete set accessor! It is used by Entity Framework
     public DbSet<Person> Persons { get; set; }
@@ -21,6 +21,7 @@ public class ProjectDbContext : DbContext
     public ProjectDbContext(DbContextOptions<ProjectDbContext> options)
         : base(options)
     {
+        this.Persons = this.Set<Person>();
     }
 
     // The following configures EF to create a Sqlite database file in the

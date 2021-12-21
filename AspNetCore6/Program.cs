@@ -7,7 +7,7 @@
  */
 
 using AspNetCore6.Data;
-using AspNetCore6.Services;
+using AspNetCore6.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -18,8 +18,8 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-// Services tied to HTTP Session
-builder.Services.AddScoped<IPersonService, PersonService>();
+// Services
+builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 
 // Controllers
 builder.Services.AddControllers();

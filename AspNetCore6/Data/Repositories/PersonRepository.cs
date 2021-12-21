@@ -10,18 +10,23 @@ using AspNetCore6.Data;
 using AspNetCore6.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AspNetCore6.Services;
+namespace AspNetCore6.Data.Repositories;
 
-public class PersonService: IPersonService
+public class PersonRepository: IPersonRepository
 {
-    private readonly ILogger<PersonService> _logger;
+    private readonly ILogger<PersonRepository> _logger;
     private readonly ProjectDbContext _dbContext;
-    
-    public PersonService(ILogger<PersonService> logger,
+
+    public PersonRepository(ILogger<PersonRepository> logger,
                          ProjectDbContext projectDbContext)
     {
         this._logger = logger;
         this._dbContext = projectDbContext;
+    }
+
+    public ProjectDbContext GetDbContext()
+    {
+        return this._dbContext;
     }
 
     public async Task<List<Person>> GetAll()
