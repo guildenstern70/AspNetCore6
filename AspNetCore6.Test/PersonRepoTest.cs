@@ -6,6 +6,7 @@
  * 
  */
 
+using AspNetCore6.Data.Models;
 using AspNetCore6.Data.Repositories;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -24,23 +25,35 @@ public class PersonRepoTest
         this._personRepository = personRepo;
 
     [Fact]
-    public void CheckDbExists()
+    public void CheckDbExistsTest()
     {
         var dbFile = Path.Join(".", "aspnetcore6.db");
         File.Exists(dbFile).Should().BeTrue();
     }
 
     [Fact]
-    public void CheckDbIsPopulated()
+    public void CheckDbIsPopulatedTest()
     {
         var dbSize = this._personRepository.Size();
         dbSize.Should().BePositive();
     }
     
     [Fact]
-    public async void FindPersons()
+    public async void FindPersonsTest()
     {
         var persons = await this._personRepository.GetAll();
         persons.Count.Should().BePositive();
     }
+
+    [Fact]
+    public async void AddNewPersonTest()
+    {
+        var person = new Person {Name = "Pippo", Surname = "Balzaroni", Age = 36, FiscalCode = "PIPBLZ71M12F345G"};
+        await this._personRepository.AddPerson(person);
+        var personFound = await this._personRepository.FindPersonsByNameAndSurname("Pippo", "Balzaroni");
+        personFound.Count.Should().Be(1);
+        personFound[0].FiscalCode.Should().Be("PIPBLZ71M12F345G");
+        // Clean Up
+        await this._personRepository.DeletePerson(personFound[0].Id);
+    } 
 }

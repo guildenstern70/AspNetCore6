@@ -28,31 +28,40 @@ public class PersonRepository: IPersonRepository
     {
         return this._dbContext;
     }
+    
+    ~PersonRepository()  // finalizer
+    {
+        // Cleaning Up Context
+        this._dbContext.Dispose();
+    }
 
     public async Task<List<Person>> GetAll()
     {
-        await using var context = this._dbContext;
-        return await context.Persons.ToListAsync();
+        return await this._dbContext.Persons.ToListAsync();
     }
 
     public async Task<Person?> GetById(int id)
     {
-        await using var context = this._dbContext;
-        return await context.Persons.FindAsync(id);
+        return await this._dbContext.Persons.FindAsync(id);
     }
 
     public async Task<Person> AddPerson(Person p)
     {
-        await using var context = this._dbContext;
-        context.Persons.Add(p);
-        await context.SaveChangesAsync();
+        this._dbContext.Persons.Add(p);
+        await this._dbContext.SaveChangesAsync();
         return p;
+    }
+
+    public async Task<List<Person>> FindPersonsByNameAndSurname(string name, string surname)
+    {
+        return await this._dbContext.Persons
+                    .Where(s => s.Name == name && s.Surname == surname)
+                    .ToListAsync();
     }
 
     public async Task<Person?> ModifyPerson(Person p)
     {
-        await using var context = this._dbContext;
-        var person = await context.Persons.FindAsync(p.Id);
+        var person = await this._dbContext.Persons.FindAsync(p.Id);
         if (person == null)
         {
             return null;
@@ -61,17 +70,16 @@ public class PersonRepository: IPersonRepository
         person.Surname = p.Surname;
         person.Age = p.Age;
         person.FiscalCode = p.FiscalCode;
-        await context.SaveChangesAsync();
+        await this._dbContext.SaveChangesAsync();
         return person;
     }
 
     public async Task DeletePerson(int id)
     {
-        await using var context = this._dbContext;
-        var person = await context.Persons.FindAsync(id);
+        var person = await this._dbContext.Persons.FindAsync(id);
         if (person == null) return;
-        context.Remove(person);
-        await context.SaveChangesAsync();
+        this._dbContext.Remove(person);
+        await this._dbContext.SaveChangesAsync();
     }
 
     public long Size()

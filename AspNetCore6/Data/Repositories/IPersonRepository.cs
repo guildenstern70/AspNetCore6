@@ -16,6 +16,7 @@ public interface IPersonRepository
     Task<Person?> GetById(int id);
     Task<Person> AddPerson(Person p);
     Task<Person?> ModifyPerson(Person p);
+    Task<List<Person>> FindPersonsByNameAndSurname(string name, string surname);
     long Size();
     ProjectDbContext GetDbContext();
     Task DeletePerson(int id);
