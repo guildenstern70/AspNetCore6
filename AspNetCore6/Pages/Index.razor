@@ -1,4 +1,5 @@
 @page "/"
+@using System.Diagnostics
 
 <PageTitle>Smart ASP.NET Core - Home</PageTitle>
 
@@ -21,7 +22,7 @@
         packed together with Blazor Server Pages and served by SQLite data
         provided by Entity Framework ORM.</p>
       <small class="txt-secondary">
-        Asp.NET Core 6 v. @_version || Environment @_environment
+        @_sdkVersion || Asp.NET Core 6 v. @_version || Environment @_environment 
       </small>
       <div class="pt-3">
         <a href="/swagger" class="btn btn-primary">Documentation</a>
@@ -38,14 +39,16 @@
 
    private string? _version;
    private string? _environment;
+   private string? _sdkVersion;
 
    protected override void OnInitialized()
    {
      var versionInfo = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version;
      this._version = versionInfo != null ? versionInfo.ToString() : "?";
      this._environment = "DEV";
+     this._sdkVersion = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
    }
-
+   
  }
 
 
