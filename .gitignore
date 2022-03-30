@@ -4,5 +4,7 @@ AspNetCore6/bin
 AspNetCore6/obj
 AspNetCore6.Test/bin
 AspNetCore6.Test/obj
+AspNetCore6/appsettings.Production.json
+
 
 

@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "AspNetCore6": {
+    "Development": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
@@ -18,18 +18,15 @@
       "applicationUrl": "http://localhost:5263",
       "dotnetRunMessages": true
     },
-    "IIS Express": {
-      "commandName": "IISExpress",
+    "Production": {
+      "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "Docker": {
-      "commandName": "Docker",
-      "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
-      "publishAllPorts": true
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "applicationUrl": "http://localhost:5263",
+      "dotnetRunMessages": true
     }
+
   }
 }

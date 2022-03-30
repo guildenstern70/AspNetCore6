@@ -10,6 +10,7 @@ using AspNetCore6.Data;
 using AspNetCore6.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Diagnostics;
 using System.Reflection;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -18,7 +19,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-// Services
+// Repositories
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 
 // Controllers
@@ -52,7 +53,16 @@ builder.Services.AddSwaggerGen(options =>
 // EF Core 
 builder.Services.AddDbContextFactory<ProjectDbContext>(opt =>
 {
-    opt.UseSqlite($"Data Source={ProjectDbContext.DbPath}");
+    if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+    {
+        Debug.WriteLine("Using SQLite Development DB");
+        opt.UseSqlite(builder.Configuration.GetConnectionString("Lite"));
+    }
+    else
+    {
+        Debug.WriteLine("Using PostgreSQL Production DB");
+        opt.UseNpgsql(builder.Configuration.GetConnectionString("Elephant"));
+    } 
 });
 
 // Logging
@@ -70,7 +80,8 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 WebApplication app = builder.Build();
 
 // Populate DB
-await using AsyncServiceScope scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateAsyncScope();
+await using AsyncServiceScope scope = 
+    app.Services.GetRequiredService<IServiceScopeFactory>().CreateAsyncScope();
 var options = scope.ServiceProvider.GetRequiredService<DbContextOptions<ProjectDbContext>>();
 await DbUtils.EnsureDbCreatedAndSeedAsync(options, 10);
 

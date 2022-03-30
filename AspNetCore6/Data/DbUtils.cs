@@ -34,6 +34,7 @@ public static class DbUtils
     
     private static void PopulateDb(ProjectDbContext dbContext)
     {
+        Debug.WriteLine("Connection String = "+ dbContext.Database.GetConnectionString());
         dbContext.Database.EnsureCreated();
         
         if (dbContext.Persons.Any())
